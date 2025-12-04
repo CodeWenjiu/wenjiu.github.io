@@ -1,6 +1,4 @@
-{# 1. 读取文件 #} {% set content = load_data(path=path, format="plain") %} {# 2.
-定义开头 (```yml) #} {% set start = "```" ~ type %} {# 3. 定义结尾 (```) #} {%
-set end = "```" %} {# 4. 核心修复：使用 join 过滤器 #} {# 我们把 [头, 内容, 尾]
-放在数组里 #} {# sep=" " 引号中间我按了一个真实的物理回车键 #} {# 这样 Tera
-不需要解析 \n，它直接插入一个换行字节 #} {{ [start, content, end] | join(sep="
-") | markdown | safe }}
+{% set content = load_data(path=path, format="plain") %} {% set nl =
+load_data(literal='"\n"', format="json") %} {% set start = "```" ~ type ~ nl %}
+{% set end = "```" %} {{ [start, content | safe, end] | join(sep="") | markdown
+| safe }}
