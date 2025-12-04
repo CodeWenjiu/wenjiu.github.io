@@ -1,7 +1,7 @@
 theme = "terminus"
 title = ""
 # The URL the site will be built for
-base_url = "https://wenjiu.github.io"
+base_url = "https://codewenjiu.github.io"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
