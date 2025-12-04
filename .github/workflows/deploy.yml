@@ -37,14 +37,12 @@ jobs:
 
             - name: Build Site with Nix
               run: |
-                  # 开启 shell 的严格模式：任何命令报错立即退出
                   set -e
 
                   echo "🚀 Starting Nix Build..."
 
-                  # 使用 --print-build-logs 查看详细下载过程
                   nix develop --command bash -c "
-                    set -e # 在 nix shell 内部也要开启严格模式
+                    set -e
 
                     echo '🔍 Checking tools...'
                     which zola
@@ -64,7 +62,6 @@ jobs:
                       exit 1
                     fi
 
-                    # 列出文件以供调试 (确认 index.html 存在)
                     ls -lh public/index.html
                   "
 

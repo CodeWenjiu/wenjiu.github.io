@@ -18,9 +18,7 @@ pub struct MyApp {
 }
 
 impl MyApp {
-    // 构造函数
     fn new(_cc: &eframe::CreationContext<'_>) -> Self {
-        // 你可以在这里加载字体、图片或恢复状态
         Self {
             name: "Zola User".to_owned(),
             age: 18,
@@ -54,8 +52,6 @@ impl eframe::App for MyApp {
     }
 }
 
-// --- Wasm 入口 ---
-
 #[wasm_bindgen]
 pub async fn start(canvas_id: &str) -> Result<(), wasm_bindgen::JsValue> {
     let window = web_sys::window().ok_or("No global `window` exists")?;
@@ -63,24 +59,19 @@ pub async fn start(canvas_id: &str) -> Result<(), wasm_bindgen::JsValue> {
         .document()
         .ok_or("Should have a document on window")?;
 
-    // 2. 根据 ID 查找元素
     let canvas = document
         .get_element_by_id(canvas_id)
         .ok_or_else(|| format!("Failed to find canvas with id '{}'", canvas_id))?;
 
-    // 3. 强制类型转换为 HtmlCanvasElement
-    // 这一步对应报错 expected `HtmlCanvasElement`
     let canvas: web_sys::HtmlCanvasElement = canvas
         .dyn_into::<web_sys::HtmlCanvasElement>()
         .map_err(|_| "Element is not a canvas")?;
-
-    // --- 结束查找 ---
 
     let web_options = eframe::WebOptions::default();
 
     eframe::WebRunner::new()
         .start(
-            canvas, // <--- 这里现在传入的是对象，而不是字符串了
+            canvas,
             web_options,
             Box::new(|cc| Ok(Box::new(MyApp::new(cc)))),
         )
