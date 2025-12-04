@@ -30,10 +30,17 @@
             zola
 
             # backend
-            rust-bin.stable.latest.default
-            rust-analyzer
+            (rust-bin.stable.latest.default.override {
+              extensions = [
+                "rust-analyzer"
+              ];
+              targets = [
+                "wasm32-unknown-unknown"
+              ];
+            })
             cargo-watch
             cargo-edit
+            wasm-pack
 
             # scripts dependencies
             nushell

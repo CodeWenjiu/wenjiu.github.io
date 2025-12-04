@@ -1,0 +1,7 @@
+set shell := [ "nu", "-c" ]
+
+# build target wasm
+build ARG:
+    @wasm-pack build {{ARG}} --target web
+    @mkdir ../static/{{ARG}}
+    @rsync -avc --delete {{ARG}}/pkg/ ../static/wasm/{{ARG}}/

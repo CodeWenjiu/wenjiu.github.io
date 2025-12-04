@@ -1,0 +1,15 @@
+[workspace]
+resolver = "2"
+members = [
+    "demo",
+    "macros"
+]
+
+[workspace.dependencies]
+wasm-bindgen = "0.2"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
