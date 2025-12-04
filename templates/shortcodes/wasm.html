@@ -7,20 +7,16 @@
     ></canvas>
     {% else %}
     <div class="wasm-controls">
-        <button id="btn-{{ module }}">运行: {{ func }}</button>
+        <button id="btn-{{ module }}">run: {{ func }}</button>
     </div>
     {% endif %}
     <div class="wasm-status" id="status-{{ module }}"></div>
 </div>
 
 <script type="module">
-    // --- 核心修复 ---
-    // 直接把 Zola 的变量写在引号里，这样浏览器收到时就是合法的字符串路径
-    // 假设 module="demo_game"，浏览器看到的就是: from "/wasm/demo_game/demo_game.js";
     import init, { {{ func }} } from "/wasm/{{ module }}/{{ module }}.js";
 
     async function runWasm() {
-        // 依然使用 classList 来避免 CSP 报错 (接上一个问题的优化)
         const statusEl = document.getElementById("status-{{ module }}");
         statusEl.classList.remove("error");
 
@@ -28,18 +24,15 @@
             await init();
 
             {% if canvas_id %}
-                // Canvas 模式
                 {{ func }}("{{ canvas_id }}");
             {% else %}
-                // 按钮模式
                 document.getElementById("btn-{{ module }}").onclick = () => {
-                    // 绑定点击事件，传入 args
                     {{ func }}({{ args | default(value="") | safe }});
                 };
             {% endif %}
         } catch (e) {
             console.error("Wasm Error:", e);
-            statusEl.innerText = "错误: " + e;
+            statusEl.innerText = "err: " + e;
             statusEl.classList.add("error");
         }
     }
